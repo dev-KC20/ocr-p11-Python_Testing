@@ -6,8 +6,9 @@ lib
 #tests/
 .envrc
 __pycache__
-ENV/
+venv/
 htmlcov/
 .coveragerc
 .env
 local/
+flake8_report/

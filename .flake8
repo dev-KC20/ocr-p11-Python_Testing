@@ -1,0 +1,20 @@
+[flake8]
+max-line-length = 119
+max-function-length=50
+doctests = True
+# no time yet to divide __init__ or create a factory fonction
+extend-ignore = CFQ002 
+exclude=
+    # unworthy time & CPU consomption
+    .gitignore,
+    .git,
+    .coveragerc
+    # no python therein
+    templates/
+    # no needs to go thru \env\site-packages\
+    venv/
+  
+    # There's no value in checking cache directories
+    __pycache__,
+    .pytest_cache
+
