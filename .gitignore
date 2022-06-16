@@ -2,7 +2,8 @@ bin
 include
 lib
 .Python
-tests/
+# let the tests be visibles from team
+#tests/
 .envrc
 __pycache__
 ENV/
