@@ -1,0 +1,10 @@
+Flask>=1.1.2
+locust==2.9.0
+pyopenssl==22.0.0
+pysocks==1.7.1
+pytest-cov==3.0.0
+pytest-flask==1.2.0
+pytest-mock==3.7.0
+selenium==4.2.0
+black==22.3.0
+pip-chill>=1.0.1
