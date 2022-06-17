@@ -43,8 +43,8 @@ def test_unknown_email_is_not_shown_welcome(client, mock_clubs):
     THEN he is not directed to the Welcome page
     """
     email = "unknown@noclub.asso"
-    expected_value = [400,403]
+    expected_value = 401
     response = client.post("/showSummary", data={"email": email}, follow_redirects=True)
     response_data = response.data.decode()
     print('expected error: ', response_data) # tracking the error
-    assert response.status_code in expected_value
+    assert response.status_code == expected_value

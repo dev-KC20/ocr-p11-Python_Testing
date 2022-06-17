@@ -25,10 +25,15 @@ def index():
     return render_template("index.html")
 
 
+@app.errorhandler(401)
 @app.route("/showSummary", methods=["POST"])
 def show_summary():
-    club = [club for club in clubs if club["email"] == request.form["email"]][0]
-    return render_template("welcome.html", club=club, competitions=competitions)
+    try:
+        club = [club for club in clubs if club["email"] == request.form["email"]][0]
+        return render_template("welcome.html", club=club, competitions=competitions)
+    except:
+        flash("Your email is not member of any of our clubs, pls check your affiliation.")
+        return render_template("401.html"), 401
 
 
 @app.route("/book/<competition>/<club>")
