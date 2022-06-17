@@ -1,33 +1,50 @@
-# from tests.unit_tests import client
-from server import app
 
+from flask import current_app, Flask
 
-def test_url_root_is_available():
+def test_url_root_is_available(client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/' page is requested (GET)
     THEN check that the response is valid
     """
 
-    response = app.test_client().get("/")
+    response = client.get("/")
     assert response.status_code == 200
 
 
-def test_url_root_is_home_page():
+def test_url_root_is_home_page(client):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/' page is requested (GET)
     THEN check that the page responded is of the GUDLFT company
     """
-    response = app.test_client().get("/")
+    response = client.get("/")
     expected = b"Welcome to the GUDLFT Registration Portal!"
     assert expected in response.data
 
 
-def test_known_email_show_summary():
+def test_known_email_is_shown_welcome(client, mock_clubs):
     """
     GIVEN a list of clubs being mocked
-    WHEN a known user logs the root page (POST)
-    THEN he is directed to the showSummary page
+    WHEN a known user post to the showSummary url (POST)
+    THEN he is directed to the Welcome page
     """
-    pass
+    expected_value = "ts1@club1.asso"
+    response = client.post("/showSummary", data={"email": expected_value}, follow_redirects=True)
+    response_data = response.data.decode()
+    assert response.status_code == 200
+    assert expected_value in response_data
+
+
+def test_unknown_email_is_not_shown_welcome(client, mock_clubs):
+    """
+    GIVEN a list of clubs being mocked
+    WHEN an uknown user post to the showSummary url (POST)
+    THEN he is not directed to the Welcome page
+    """
+    email = "unknown@noclub.asso"
+    expected_value = [400,403]
+    response = client.post("/showSummary", data={"email": email}, follow_redirects=True)
+    response_data = response.data.decode()
+    print('expected error: ', response_data) # tracking the error
+    assert response.status_code in expected_value
