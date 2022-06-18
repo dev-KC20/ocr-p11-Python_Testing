@@ -122,6 +122,22 @@ def test_book_no_more_places_than_points_earned(client):
     response_data = response.data.decode()
     # print("purchase data: ", response_data)  # tracking the error
     expected = "<li>Great-booking complete!</li>"
-    expected_status = 200
-    assert response.status_code == expected_status
+    assert expected not in response_data
+    
+def test_book_no_more_than_max_per_competition(client):
+    """
+    GIVEN selected club, its earned points and # of place to book over max 
+    WHEN the '/purchasePlaces' page is requested (POST)
+    THEN check that no welcome with booking completed
+    """
+    club_name = "Test Secretary 1"
+    competition_name = "Festival 3"
+    places_to_book = 15
+    url = "/purchasePlaces"
+    response = client.post(url,
+    data={"competition": competition_name, "club": club_name, "places": places_to_book},
+     follow_redirects=True)
+    response_data = response.data.decode()
+    # print("purchase data: ", response_data)  # tracking the error
+    expected = "<li>Great-booking complete!</li>"
     assert expected not in response_data
