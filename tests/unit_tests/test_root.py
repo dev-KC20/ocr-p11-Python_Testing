@@ -86,7 +86,7 @@ def test_url_book_goes_happy_to_purchase_page(client):
     """
     GIVEN selected club, competition and # of place to book
     WHEN the '/purchasePlaces' page is requested (POST)
-    THEN check that the page responded is the Purchase page
+    THEN check that the page responded is the Welcome page
     """
 
     club_name = "Test Secretary 3"
@@ -96,7 +96,32 @@ def test_url_book_goes_happy_to_purchase_page(client):
     response = client.post(url,
     data={"competition": competition_name, "club": club_name, "places": places_to_book},
      follow_redirects=False)
+    response_data = response.data.decode()
+    print("purchase data: ", response_data)  # tracking the error
     expected_status = 200
-    # expected = b"Booking for"
+    expected = b"Welcome"
     assert response.status_code == expected_status
-    # assert expected in response.data
+    assert expected in response.data
+
+    
+def test_book_no_more_places_than_points_earned(client):
+    """
+    GIVEN selected club, its earned points less than # of place to book  
+    WHEN the '/purchasePlaces' page is requested (POST)
+    THEN check that no welcome with booking completed
+    """
+    club_name = "Test Secretary 3"
+    competition_name = "Festival 3"
+    # club_details = next((sub for sub in clubs if sub['name'] == club_name), None)
+    # print('club mocked:', club_details["points"])
+    places_to_book = 5
+    url = "/purchasePlaces"
+    response = client.post(url,
+    data={"competition": competition_name, "club": club_name, "places": places_to_book},
+     follow_redirects=True)
+    response_data = response.data.decode()
+    # print("purchase data: ", response_data)  # tracking the error
+    expected = "<li>Great-booking complete!</li>"
+    expected_status = 200
+    assert response.status_code == expected_status
+    assert expected not in response_data
