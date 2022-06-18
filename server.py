@@ -49,15 +49,22 @@ def book(competition, club):
 
 @app.route("/purchasePlaces", methods=["POST"])
 def purchase_places():
-    competition = [c for c in competitions if c["name"] == request.form["competition"]][0]
-    club = [c for c in clubs if c["name"] == request.form["club"]][0]
-    places_required = int(request.form["places"])
-    if places_required > int(club['points']):
-        flash("Sorry you didn't earn enough points, pls reconsider.", 'error')
+    try:
+        competition_selected = request.form["competition"]
+        club_selected = request.form["club"]
+        places_required = int(request.form["places"])
+        competition_data = [c for c in competitions if c["name"] == competition_selected][0]
+        club_data = [c for c in clubs if c["name"] == club_selected][0]
+    except:
+        flash("Your email is not member of any of our clubs, pls check your affiliation.")
+        return render_template("401.html"), 401
     else:
-        competition["numberOfPlaces"] = int(competition["numberOfPlaces"]) - places_required
-        flash("Great-booking complete!")
-    return render_template("welcome.html", club=club, competitions=competitions)
+        if places_required > int(club_data['points']):
+            flash("Sorry you didn't earn enough points, pls reconsider.", 'error')
+        else:
+            competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
+            flash("Great-booking complete!")
+        return render_template("welcome.html", club=club_data, competitions=competitions)
 
 
 # TODO: Add route for points display
