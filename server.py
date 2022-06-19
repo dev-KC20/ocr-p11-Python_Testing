@@ -101,6 +101,7 @@ def purchase_places():
              flash(constants.DATE_LATE)
         else:
             booking[club_selected][competition_selected] += places_required
+            club_data["points"] = int(club_data["points"]) - places_required
             competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
             flash(constants.BOOKING_COMPLETED, "info")
     finally:
