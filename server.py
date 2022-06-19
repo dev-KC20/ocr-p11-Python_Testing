@@ -1,6 +1,7 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
+import constants
 
 def load_clubs():
     with open("clubs.json") as c:
@@ -29,11 +30,10 @@ def load_bookings(clubs, competitions):
 
 
 app = Flask(__name__)
-app.secret_key = "something_special"
+app.secret_key = constants.SECRET_KEYS
 competitions = load_competitions()
 clubs = load_clubs()
 booking = load_bookings(clubs, competitions)
-print("initial club x cometition: ", booking)
 
 
 @app.route("/")
@@ -48,7 +48,7 @@ def show_summary():
         club = [club for club in clubs if club["email"] == request.form["email"]][0]
         return render_template("welcome.html", club=club, competitions=competitions)
     except:
-        flash("Your email is not member of any of our clubs, pls check your affiliation.")
+        flash(constants.MAIL_UNKNOWN)
         return render_template("401.html"), 401
 
 
@@ -59,7 +59,7 @@ def book(competition, club):
     if found_club and found_competition:
         return render_template("booking.html", club=found_club, competition=found_competition)
     else:
-        flash("Something went wrong-please try again")
+        flash(constants.SOMETHING_WRONG)
         return render_template("welcome.html", club=club, competitions=competitions)
 
 
@@ -72,27 +72,27 @@ def purchase_places():
         competition_data = [c for c in competitions if c["name"] == competition_selected][0]
         club_data = [c for c in clubs if c["name"] == club_selected][0]
     except TypeError as error:
-        flash("Type error, pls check your affiliation.")
+        flash(constants.TYPE_ERROR)
         flash(error)
     except IndexError as error:
-        flash("Index Error, pls check your affiliation.")
+        flash(constants.INDEX_ERROR)
         flash(error)
     except KeyError as error:
-        flash("Key Error, pls check your affiliation.")
+        flash(constants.KEY_ERROR)
         flash(error)
     else:
-        print("x selected data", competition_selected, club_selected)
-        print("y booking data:", booking)
         places_already_booked = booking[club_selected][competition_selected]
-        print("z places_already_booked:", places_already_booked)
+        # print("x selected data", competition_selected, club_selected)
+        # print("y booking data:", booking)
+        # print("z places_already_booked:", places_already_booked)
         if places_required > int(club_data["points"]):
-            flash("Sorry you didn't earn enough points, pls reconsider.", "error")
+            flash(constants.NOT_ENOUGH_POINTS, "error")
         elif places_required + places_already_booked > 12:
-            flash("Sorry you booked more than 12 per competition, pls reconsider.", "error")
+            flash(constants.MORE_THAN_MAX, "error")
         else:
             booking[club_selected][competition_selected] += places_required
             competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
-            flash("Great-booking complete!")
+            flash(constants.BOOKING_COMPLETED, "info")
     finally:
         return render_template("welcome.html", club=club_data, competitions=competitions)
 

@@ -1,5 +1,7 @@
 # future fixtures
 import pytest
+import constants
+
 import server  # to have its Club object mocked
 from server import app
 
