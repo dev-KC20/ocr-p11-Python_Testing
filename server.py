@@ -38,6 +38,7 @@ booking = load_bookings(clubs, competitions)
 
 
 @app.route("/")
+@app.route("/index")
 def index():
     return render_template("index.html")
 
@@ -109,6 +110,11 @@ def purchase_places():
 
 
 # TODO: Add route for points display
+@app.route("/displayBoard")
+def display_board():
+    # clubs= sorted(clubs, key=lambda club: club['name'])
+    return render_template("board.html",   clubs=clubs)
+
 @app.route("/logout")
 def logout():
     return redirect(url_for("index"))
