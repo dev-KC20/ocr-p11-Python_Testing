@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
@@ -57,7 +58,13 @@ def book(competition, club):
     found_club = [c for c in clubs if c["name"] == club][0]
     found_competition = [c for c in competitions if c["name"] == competition][0]
     if found_club and found_competition:
-        return render_template("booking.html", club=found_club, competition=found_competition)
+        date_competition = datetime.strptime(found_competition["date"], "%Y-%m-%d %H:%M:%S")
+        if date_competition < datetime.now():
+            flash(constants.DATE_LATE)
+            return render_template("welcome.html", club=club, competitions=competitions)
+        else:
+            flash(constants.DATE_FINE)
+            return render_template("booking.html", club=found_club, competition=found_competition)
     else:
         flash(constants.SOMETHING_WRONG)
         return render_template("welcome.html", club=club, competitions=competitions)
@@ -85,10 +92,13 @@ def purchase_places():
         # print("x selected data", competition_selected, club_selected)
         # print("y booking data:", booking)
         # print("z places_already_booked:", places_already_booked)
+        date_competition = datetime.strptime(competition_data["date"], "%Y-%m-%d %H:%M:%S")
         if places_required > int(club_data["points"]):
             flash(constants.NOT_ENOUGH_POINTS, "error")
         elif places_required + places_already_booked > 12:
             flash(constants.MORE_THAN_MAX, "error")
+        elif date_competition < datetime.now():
+             flash(constants.DATE_LATE)
         else:
             booking[club_selected][competition_selected] += places_required
             competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
