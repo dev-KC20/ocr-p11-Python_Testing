@@ -96,14 +96,17 @@ def purchase_places():
         date_competition = datetime.strptime(competition_data["date"], "%Y-%m-%d %H:%M:%S")
         if places_required > int(club_data["points"]):
             flash(constants.NOT_ENOUGH_POINTS, "error")
+        elif places_required <= 0:
+            flash(constants.MORE_THAN_ZERO, "error")
         elif places_required + places_already_booked > 12:
             flash(constants.MORE_THAN_MAX, "error")
         elif date_competition < datetime.now():
-             flash(constants.DATE_LATE)
+            flash(constants.DATE_LATE)
         else:
             booking[club_selected][competition_selected] += places_required
             club_data["points"] = int(club_data["points"]) - places_required
             competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
+            flash(str(places_required) + " places were bought, Congratulations!", "info")
             flash(constants.BOOKING_COMPLETED, "info")
     finally:
         return render_template("welcome.html", club=club_data, competitions=competitions)
