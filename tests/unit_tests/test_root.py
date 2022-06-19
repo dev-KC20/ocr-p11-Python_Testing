@@ -1,4 +1,4 @@
-from flask import current_app, Flask
+from flask import current_app, Flask, session
 
 
 def test_url_root_is_available(client):
@@ -18,8 +18,8 @@ def test_url_root_is_home_page(client):
     WHEN the '/' page is requested (GET)
     THEN check that the page responded is of the GUDLFT company
     """
-    response = client.get("/")
     expected = b"Welcome to the GUDLFT Registration Portal!"
+    response = client.get("/")
     assert expected in response.data
 
 
@@ -42,29 +42,30 @@ def test_unknown_email_is_not_shown_welcome(client):
     WHEN an uknown user post to the showSummary url (POST)
     THEN he is not directed to the Welcome page
     """
-    email = "unknown@noclub.asso"
     expected_value = 401
+    email = "unknown@noclub.asso"
     response = client.post("/showSummary", data={"email": email}, follow_redirects=False)
     # response_data = response.data.decode()
     # print("expected error: ", response_data)  # tracking the error
     assert response.status_code == expected_value
 
 
-def test_url_book_goes_happy_to_booking_page(client):
+def test_url_book_directs_to_booking_page(client):
     """
     GIVEN club and competition exists
     WHEN the '/book/<competition>/<club>' page is requested (GET)
     THEN check that the page responded is the booking page
     """
 
+    expected_status = 200
+    expected = b"Booking for"
     club_name = "Test Secretary 3"
     competition_name = "Festival 3"
     url = "/book/" + competition_name + "/" + club_name
     response = client.get(url, data={"competition": competition_name, "club": club_name}, follow_redirects=False)
-    expected_status = 200
-    expected = b"Booking for"
     assert response.status_code == expected_status
     assert expected in response.data
+
 
 # def test_url_book_goes_sad_to_booking_page(client):
 #     """
@@ -81,63 +82,86 @@ def test_url_book_goes_happy_to_booking_page(client):
 #     assert response.status_code == expected_status
 
 
-
-def test_url_book_goes_happy_to_purchase_page(client):
+def test_book_less_places_than_points_earned(client):
     """
     GIVEN selected club, competition and # of place to book
     WHEN the '/purchasePlaces' page is requested (POST)
     THEN check that the page responded is the Welcome page
     """
 
-    club_name = "Test Secretary 3"
-    competition_name = "Festival 3"
-    places_to_book = 5
-    url = "/purchasePlaces"
-    response = client.post(url,
-    data={"competition": competition_name, "club": club_name, "places": places_to_book},
-     follow_redirects=False)
-    response_data = response.data.decode()
-    print("purchase data: ", response_data)  # tracking the error
     expected_status = 200
-    expected = b"Welcome"
-    assert response.status_code == expected_status
-    assert expected in response.data
-
-    
-def test_book_no_more_places_than_points_earned(client):
-    """
-    GIVEN selected club, its earned points less than # of place to book  
-    WHEN the '/purchasePlaces' page is requested (POST)
-    THEN check that no welcome with booking completed
-    """
+    expected = "<li>Great-booking complete!</li>"
     club_name = "Test Secretary 3"
     competition_name = "Festival 3"
-    # club_details = next((sub for sub in clubs if sub['name'] == club_name), None)
-    # print('club mocked:', club_details["points"])
-    places_to_book = 5
+    places_to_book = "3"  # ts3 only got 4 pts
     url = "/purchasePlaces"
-    response = client.post(url,
-    data={"competition": competition_name, "club": club_name, "places": places_to_book},
-     follow_redirects=True)
+    body = {"competition": competition_name, "club": club_name, "places": places_to_book}
+    response = client.post(
+        url,
+        data=body,
+        follow_redirects=False,
+    )
     response_data = response.data.decode()
-    # print("purchase data: ", response_data)  # tracking the error
-    expected = "<li>Great-booking complete!</li>"
-    assert expected not in response_data
-    
-def test_book_no_more_than_max_per_competition(client):
+    assert response.status_code == expected_status
+    assert expected in response_data
+    # print("purchase body: ", body)  # tracking the error
+    # print("purchase response: ", response.data.decode())  # tracking the error
+
+
+def test_book_more_places_than_points_earned(client):
     """
-    GIVEN selected club, its earned points and # of place to book over max 
+    GIVEN selected club, its earned points less than # of place to book
     WHEN the '/purchasePlaces' page is requested (POST)
     THEN check that no welcome with booking completed
     """
+    expected = "Sorry you didn't earn enough points, pls reconsider."
+    club_name = "Test Secretary 3"
+    competition_name = "Festival 3"
+    places_to_book = 5  # club obly got 4
+    url = "/purchasePlaces"
+    response = client.post(
+        url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
+    )
+    response_data = response.data.decode()
+    assert expected not in response_data
+
+
+def test_book_more_than_max_per_competition(client):
+    """
+    GIVEN selected club, its earned points and # of places required over max per competition
+    WHEN the '/purchasePlaces' page is requested (POST)
+    THEN check for an error message
+    """
+    expected = "Sorry you booked more than 12 per competition, pls reconsider."
     club_name = "Test Secretary 1"
     competition_name = "Festival 3"
     places_to_book = 15
     url = "/purchasePlaces"
-    response = client.post(url,
-    data={"competition": competition_name, "club": club_name, "places": places_to_book},
-     follow_redirects=True)
-    response_data = response.data.decode()
-    # print("purchase data: ", response_data)  # tracking the error
-    expected = "<li>Great-booking complete!</li>"
-    assert expected not in response_data
+    response = client.post(
+        url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
+    )
+    response_data = response.get_data(as_text=True)
+    print("purchase data: ", response_data)  # tracking the error
+    assert expected in response_data
+
+
+def test_book_more_than_max_per_competition_in_two_times(client):
+    """
+    GIVEN selected club, its earned points and # of places required over max per competition
+    WHEN the '/purchasePlaces' page is requested (POST)
+    THEN check for an error message
+    """
+    expected = "Sorry you booked more than 12 per competition, pls reconsider."
+    club_name = "Test Secretary 1"
+    competition_name = "Festival 3"
+    places_to_book = 7
+    url = "/purchasePlaces"
+    client.post(
+        url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
+    )
+    response = client.post(
+        url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
+    )
+    response_data = response.get_data(as_text=True)
+    print("purchase data: ", response_data)  # tracking the error
+    assert expected in response_data
