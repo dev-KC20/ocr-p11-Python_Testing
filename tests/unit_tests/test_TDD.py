@@ -2,6 +2,7 @@ from flask import current_app, Flask, session
 
 import constants
 
+
 def test_url_root_is_available(client):
     """
     GIVEN a Flask application configured for testing
@@ -66,7 +67,7 @@ def test_valid_purchase_directs_to_completed_welcome(client):
     expected = constants.BOOKING_COMPLETED
     club_name = "Test Secretary 3"
     competition_name = "Festival 3"
-    places_to_book = "3"  # ts3 only got 4 pts
+    places_to_book = "1"  # ts3 only got 4 pts
     url = "/purchasePlaces"
     body = {"competition": competition_name, "club": club_name, "places": places_to_book}
     response = client.post(
@@ -75,8 +76,8 @@ def test_valid_purchase_directs_to_completed_welcome(client):
         follow_redirects=False,
     )
     response_data = response.data.decode()
+    response_text = response.get_data(as_text=True)
     assert response.status_code == expected_status
-    assert expected in response_data
+    assert expected in response_text
+    # print("valid_purchase_directs_to_completed_welcome response: \n", response_text)  # tracking the error
     # print("purchase body: ", body)  # tracking the error
-    # print("purchase response: ", response.data.decode())  # tracking the error
-

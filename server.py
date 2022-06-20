@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, flash, url_for
 
 import constants
 
+
 def load_clubs():
     with open("clubs.json") as c:
         list_of_clubs = json.load(c)["clubs"]
@@ -92,6 +93,7 @@ def purchase_places():
         places_already_booked = booking[club_selected][competition_selected]
         # print("x selected data", competition_selected, club_selected)
         # print("y booking data:", booking)
+        # print("a*** there we are:", "\n\n\n")
         # print("z places_already_booked:", places_already_booked)
         date_competition = datetime.strptime(competition_data["date"], "%Y-%m-%d %H:%M:%S")
         if places_required > int(club_data["points"]):
@@ -104,7 +106,7 @@ def purchase_places():
             flash(constants.DATE_LATE)
         else:
             booking[club_selected][competition_selected] += places_required
-            club_data["points"] = int(club_data["points"]) - places_required
+            club_data["points"] = int(club_data["points"]) - (places_required * constants.PLACE_PRICE)
             competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
             flash(str(places_required) + " places were bought, Congratulations!", "info")
             flash(constants.BOOKING_COMPLETED, "info")
@@ -116,7 +118,8 @@ def purchase_places():
 @app.route("/displayBoard")
 def display_board():
     # clubs= sorted(clubs, key=lambda club: club['name'])
-    return render_template("board.html",   clubs=clubs)
+    return render_template("board.html", clubs=clubs)
+
 
 @app.route("/logout")
 def logout():

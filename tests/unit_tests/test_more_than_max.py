@@ -19,7 +19,7 @@ def test_book_more_than_max_per_competition(client):
         url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
     )
     response_data = response.get_data(as_text=True)
-    print("purchase data: ", response_data)  # tracking the error
+    # print("purchase data: ", response_data)  # tracking the error
     assert expected in response_data
 
 
@@ -30,16 +30,17 @@ def test_book_more_than_max_per_competition_in_two_times(client):
     THEN check for an error message
     """
     expected = constants.MORE_THAN_MAX
-    club_name = "Test Secretary 1"
-    competition_name = "Festival 3"
-    places_to_book = 7
+    club_name = "Test Secretary 5" # 50pts ; 11*3 + 2*3 == 39 pts ; 13 places
+    competition_name = "Festival 3" # 20 places
+    places_to_book = 11
     url = "/purchasePlaces"
     client.post(
         url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
     )
+    places_to_book = 2
     response = client.post(
         url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
     )
     response_data = response.get_data(as_text=True)
-    print("purchase data: ", response_data)  # tracking the error
+    # print("purchase data: ", response_data)  # tracking the error
     assert expected in response_data

@@ -18,7 +18,7 @@ def test_book_not_in_past(client):
         url, data={"competition": competition_name, "club": club_name,}, follow_redirects=True
     )
     response_data = response.get_data(as_text=True)
-    print("booking data: ", response_data)  # tracking the error
+    # print("booking data: ", response_data)  # tracking the error
     assert expected in response_data
 
 
@@ -37,7 +37,7 @@ def test_purchase_not_in_past(client):
         url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
     )
     response_data = response.get_data(as_text=True)
-    print("purchase data: ", response_data)  # tracking the error
+    # print("purchase data: ", response_data)  # tracking the error
     assert expected not in response_data
 
 
@@ -56,7 +56,7 @@ def test_purchase_in_future(client):
         url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
     )
     response_data = response.get_data(as_text=True)
-    print("purchase data: ", response_data)  # tracking the error
+    # print("purchase data: ", response_data)  # tracking the error
     assert expected in response_data
 
 

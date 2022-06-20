@@ -8,7 +8,7 @@ def test_purchase_x_places_and_show_account(client):
     WHEN they '/purchasePlaces' (POST) m places
     THEN check their account shows n-m points
     """
-    expected = "14"
+    expected = "12" # new
     club_name = "Test Secretary 1" # 15 pts
     places_to_book = 1
     competition_name = "Festival 3" 
