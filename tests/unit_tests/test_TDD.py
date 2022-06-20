@@ -77,7 +77,7 @@ def test_valid_purchase_directs_to_completed_welcome(client):
     )
     response_data = response.data.decode()
     response_text = response.get_data(as_text=True)
-    print("valid_purchase_directs_to_completed_welcome response: \n", response_text)  # tracking the error
+    # print("valid_purchase_directs_to_completed_welcome response: \n", response_text)  # tracking the error
     assert response.status_code == expected_status
     assert expected in response_text
     # print("purchase body: ", body)  # tracking the error

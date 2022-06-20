@@ -23,7 +23,7 @@ def test_book_less_places_than_points_earned(client):
         follow_redirects=False,
     )
     response_data = response.data.decode()
-    print('response ', response_data)
+    # print('response ', response_data)
     assert response.status_code == expected_status
     assert expected in response_data
 

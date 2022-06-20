@@ -43,5 +43,5 @@ def test_book_more_than_max_per_competition_in_two_times(client):
         url, data={"competition": competition_name, "club": club_name, "places": places_to_book}, follow_redirects=True
     )
     response_data = response.get_data(as_text=True)
-    print("purchase data: ", response_data)  # tracking the error
+    # print("purchase data: ", response_data)  # tracking the error
     assert expected in response_data

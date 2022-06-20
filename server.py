@@ -81,15 +81,15 @@ def purchase_places():
         competition_data = [c for c in competitions if c["name"] == competition_selected][0]
         club_data = [c for c in clubs if c["name"] == club_selected][0]
     except TypeError as error:
-        print("x1 type error", competition_selected, club_selected, place_required)
+        # print("x1 type error", competition_selected, club_selected, place_required)
         flash(constants.TYPE_ERROR)
         flash(error)
     except IndexError as error:
-        print("x2 index error", competition_selected, club_selected, place_required)
+        # print("x2 index error", competition_selected, club_selected, place_required)
         flash(constants.INDEX_ERROR)
         flash(error)
     except KeyError as error:
-        print("x3 key error", competition_selected, club_selected, place_required)
+        # print("x3 key error", competition_selected, club_selected, place_required)
         flash(constants.KEY_ERROR)
         flash(error)
     else:
@@ -97,25 +97,25 @@ def purchase_places():
         # print("x selected data", competition_selected, club_selected)
         # print("y booking data:", booking)
         # print("a*** there we are:", "\n\n\n")
-        print("y places_required:", places_required)
-        print("z places_already_booked:", places_already_booked)
+        # print("y places_required:", places_required)
+        # print("z places_already_booked:", places_already_booked)
         date_competition = datetime.strptime(competition_data["date"], "%Y-%m-%d %H:%M:%S")
         if (places_required  + places_already_booked) > (int(club_data["points"])/constants.PLACE_PRICE):
-            print("z1 places_already_booked:", places_already_booked)
+            # print("z1 places_already_booked:", places_already_booked)
             flash(constants.NOT_ENOUGH_POINTS, "error")
         elif places_required <= 0:
-            print("z2 places_already_booked:", places_already_booked)
+            # print("z2 places_already_booked:", places_already_booked)
             flash(constants.MORE_THAN_ZERO, "error")
         elif places_required + places_already_booked > 12:
-            print("z3 places_already_booked:", places_already_booked)
+            # print("z3 places_already_booked:", places_already_booked)
             flash(constants.MORE_THAN_MAX, "error")
         elif date_competition < datetime.now():
-            print("z4 places_already_booked:", places_already_booked)
+            # print("z4 places_already_booked:", places_already_booked)
             flash(constants.DATE_LATE)
         else:
             flash(constants.DATE_FINE)
             booking[club_selected][competition_selected] = places_already_booked + places_required
-            print("zz places_already_booked:", booking[club_selected][competition_selected])
+            # print("zz places_already_booked:", booking[club_selected][competition_selected])
             club_data["points"] = int(club_data["points"]) - (places_required * constants.PLACE_PRICE)
             competition_data["numberOfPlaces"] = int(competition_data["numberOfPlaces"]) - places_required
             flash(str(places_required) + " places were bought, Congratulations!", "info")
