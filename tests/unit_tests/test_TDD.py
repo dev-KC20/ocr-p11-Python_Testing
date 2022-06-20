@@ -67,7 +67,7 @@ def test_valid_purchase_directs_to_completed_welcome(client):
     expected = constants.BOOKING_COMPLETED
     club_name = "Test Secretary 3"
     competition_name = "Festival 3"
-    places_to_book = "1"  # ts3 only got 4 pts
+    places_to_book = 1  # ts3 only got 4 pts
     url = "/purchasePlaces"
     body = {"competition": competition_name, "club": club_name, "places": places_to_book}
     response = client.post(
@@ -77,7 +77,7 @@ def test_valid_purchase_directs_to_completed_welcome(client):
     )
     response_data = response.data.decode()
     response_text = response.get_data(as_text=True)
+    print("valid_purchase_directs_to_completed_welcome response: \n", response_text)  # tracking the error
     assert response.status_code == expected_status
     assert expected in response_text
-    # print("valid_purchase_directs_to_completed_welcome response: \n", response_text)  # tracking the error
     # print("purchase body: ", body)  # tracking the error

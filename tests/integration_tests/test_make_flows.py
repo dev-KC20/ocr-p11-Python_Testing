@@ -54,9 +54,9 @@ def test_make_happily_flow_from_loggin_to_purchasing(client):
 
     expected_completed = constants.BOOKING_COMPLETED
     expected_account = "1"
-    club_name = "Test Secretary 3"
+    club_name = "Test Secretary 5"
     competition_name = "Festival 3"
-    places_to_book = "3"  # ts3 only got 4 pts
+    places_to_book = 3  # ts5 got 50 pts 3 places cost 36 pts ok
     url = "/purchasePlaces"
     body = {"competition": competition_name, "club": club_name, "places": places_to_book}
     response = client.post(
@@ -74,5 +74,5 @@ def test_make_happily_flow_from_loggin_to_purchasing(client):
     account_end = account_start + 5
     account_balance = response_text[account_start:account_end]
     assert expected_account in account_balance
-
     # print("D response: ", response_data, account_balance)  # tracking the error
+

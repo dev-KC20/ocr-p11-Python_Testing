@@ -38,19 +38,20 @@ def competitions():
     return competitions
 
 
-# @pytest.fixture(scope="function")
-booking = {
+@pytest.fixture(scope="function")
+def booking():
+    booking = {
     "Test Secretary 1": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
     "Test Secretary 2": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
     "Test Secretary 3": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
     "Test Secretary 4": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
     "Test Secretary 5": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
 }
-# return booked_places
+    return booking
 
 
 @pytest.fixture
-def client(mocker, clubs, competitions):
+def client(mocker, clubs, competitions, booking):
     mocker.patch.object(server, "clubs", clubs)
     mocker.patch.object(server, "competitions", competitions)
     mocker.patch.object(server, "booking", booking)
