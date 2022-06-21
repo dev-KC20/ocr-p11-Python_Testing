@@ -3,7 +3,7 @@ from flask import current_app, Flask, session
 import constants
 
 
-def test_make_happily_flow_from_loggin_to_purchasing(client):
+def test_make_happily_flow_from_loggin_to_purchase(client):
 
     """
     GIVEN a Flask application configured for testing and a club's secretary
