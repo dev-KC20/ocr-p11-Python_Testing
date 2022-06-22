@@ -65,4 +65,5 @@ def test_user_makes_happily_flow_from_loggin_to_purchase():
     # Points available: 1?
     new_club_point = get_account(club_account)
     assert new_club_point == current_club_point - (places_to_book * constants.PLACE_PRICE)
-    driver.close()
+    driver.quit()
+    # driver.close()

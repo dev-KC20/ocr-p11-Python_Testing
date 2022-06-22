@@ -10,6 +10,7 @@ class HelloWorldUser(HttpUser):
     email = last_club["email"]
     club_name = last_club["name"]
     competition_name = last_competition["name"]
+    places_to_book = 1
 
     def on_start(self):
         self.client.get("/")
@@ -22,3 +23,20 @@ class HelloWorldUser(HttpUser):
     def display_board(self):
         self.client.get("/displayBoard")
 
+    @task
+    def book_competitions(self):
+        url = "/book/" + self.competition_name + "/" + self.club_name
+        body = {"competition": self.competition_name, "club": self.club_name}
+        self.client.get(
+            url,
+            data=body,
+        )
+
+    @task
+    def purchase_places(self):
+        url = "/purchasePlaces"
+        body = {"competition": self.competition_name, "club": self.club_name, "places": self.places_to_book}
+        self.client.post(
+            url,
+            data=body,
+        )

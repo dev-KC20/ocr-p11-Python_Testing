@@ -1,6 +1,27 @@
 from flask import current_app, Flask, session
 
 import constants
+from server import load_clubs, load_competitions
+
+
+def test_clubs_are_loaded(client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the server app starts
+    THEN check that there is at least one club loaded
+    """
+    response = load_clubs()
+    assert len(response) > 0
+
+
+def test_competitions_are_loaded(client):
+    """
+    GIVEN a Flask application configured for testing
+    WHEN the server app starts
+    THEN check that there is at least one competition loaded
+    """
+    response = load_competitions()
+    assert len(response) > 0
 
 
 def test_url_root_is_available(client):

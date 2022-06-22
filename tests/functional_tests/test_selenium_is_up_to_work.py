@@ -12,4 +12,4 @@ def test_selenium_is_up_to_work():
     elem.send_keys("pycon")
     elem.send_keys(Keys.RETURN)
     assert "No results found." not in driver.page_source
-    driver.close()
+    driver.quit()
