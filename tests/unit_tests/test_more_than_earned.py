@@ -10,11 +10,12 @@ def test_book_less_places_than_points_earned(client):
     THEN check that the page responded is the Welcome page
     """
 
-    expected_status = 200
-    expected = constants.BOOKING_COMPLETED
     club_name = "Test Secretary 3" # club only got 4 pts == 1 place
     competition_name = "Festival 3"
-    places_to_book = 1  # == 3 pts
+    places_to_book = 1  # ts3 only got 4 pts
+
+    expected_status = 200
+    expected = constants.BOOKING_COMPLETED
     url = "/purchasePlaces"
     body = {"competition": competition_name, "club": club_name, "places": places_to_book}
     response = client.post(
