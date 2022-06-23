@@ -1,6 +1,6 @@
 from flask import current_app, Flask, session
 
-import constants
+import utils.constants as constants
 
 
 def test_known_email_is_shown_welcome(client):

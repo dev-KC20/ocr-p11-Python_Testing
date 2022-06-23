@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-import constants
+import utils.constants as constants
 
 def test_site_is_up_and_running():
     driver = webdriver.Firefox()

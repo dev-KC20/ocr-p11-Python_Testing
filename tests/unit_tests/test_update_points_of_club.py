@@ -1,6 +1,6 @@
 from flask import current_app, Flask, session
 
-import constants
+import utils.constants as constants
 
 def test_purchase_x_places_and_show_account(client):
     """

@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-import constants
+import utils.constants as constants
 
 
 def get_by_id_and_return(driver, searched_id):

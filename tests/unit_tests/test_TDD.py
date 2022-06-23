@@ -1,6 +1,6 @@
 from flask import current_app, Flask, session
 
-import constants
+import utils.constants as constants
 from server import load_clubs, load_competitions
 
 
@@ -67,7 +67,7 @@ def test_valid_url_book_directs_to_booking_page(client):
     THEN check that the page responded is the booking page
     """
 
-    expected_status = 200
+    expected_status = 302
     expected = b"Booking for"
     club_name = "Test Secretary 3"
     competition_name = "Festival 3"

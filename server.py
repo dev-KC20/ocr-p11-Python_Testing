@@ -1,8 +1,9 @@
 from datetime import datetime
 import json
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for, session
+from utils.decorators import login_required
 
-import constants
+import utils.constants as constants
 
 
 def load_clubs():
@@ -47,9 +48,13 @@ def index():
 
 @app.errorhandler(401)
 @app.route("/showSummary", methods=["POST"])
+# @login_required
 def show_summary():
     try:
         club = [club for club in clubs if club["email"] == request.form["email"]][0]
+        session['logged_in'] = True
+        session['username'] = request.form["email"]
+        flash(constants.LOGGED_IN)
         return render_template("welcome.html", club=club, competitions=competitions)
     except:
         flash(constants.MAIL_UNKNOWN)
@@ -57,6 +62,7 @@ def show_summary():
 
 
 @app.route("/book/<competition>/<club>")
+@login_required
 def book(competition, club):
     found_club = [c for c in clubs if c["name"] == club][0]
     found_competition = [c for c in competitions if c["name"] == competition][0]
@@ -74,6 +80,7 @@ def book(competition, club):
 
 
 @app.route("/purchasePlaces", methods=["POST"])
+@login_required
 def purchase_places():
     try:
         competition_selected = request.form["competition"]
@@ -120,5 +127,10 @@ def display_board():
 
 
 @app.route("/logout")
+@login_required
 def logout():
+    # session['logged_in'] = False
+    # session['username'] = ""
+    session.clear()
+    flash(constants.LOGGED_OUT)
     return redirect(url_for("index"))

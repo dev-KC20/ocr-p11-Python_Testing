@@ -1,6 +1,6 @@
 from flask import current_app, Flask, session
 
-import constants
+import utils.constants as constants
 
 
 def test_book_less_places_than_points_earned(client):

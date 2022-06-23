@@ -1,6 +1,6 @@
 from flask import current_app, Flask, session
 
-import constants
+import utils.constants as constants
 
 def test_url_display_board_is_available(client):
     """
