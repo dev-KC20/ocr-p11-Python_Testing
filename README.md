@@ -93,6 +93,7 @@
    * Of the pytest command:  
     <code>  
     (venv) \your_path\ocr-p11-Python_Testing>pytest  
+     </code>  
 ================================================= test session starts =================================================  
 platform win32 -- Python 3.9.7, pytest-7.1.2, pluggy-1.0.0  
 rootdir: \your_path\ocr-p11-Python_Testing  
@@ -110,7 +111,7 @@ tests\unit_tests\test_not_in_past.py ...                                        
 tests\unit_tests\test_points-display-board.py .                                                                  [ 96%]  
 tests\unit_tests\test_update_points_of_club.py .                                                                 [100%]  
 ================================================= 25 passed in 27.19s =================================================  
-    </code>  
+   
 
    * Of the coverage measurement:      
 ![](img/coverage_test_85.png)  
