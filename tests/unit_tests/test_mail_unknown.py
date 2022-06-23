@@ -1,8 +1,3 @@
-from flask import current_app, Flask, session
-
-import constants
-
-
 def test_known_email_is_shown_welcome(client):
     """
     GIVEN a list of clubs being mocked
@@ -28,4 +23,3 @@ def test_unknown_email_is_not_shown_welcome(client):
     # response_data = response.data.decode()
     # print("expected error: ", response_data)  # tracking the error
     assert response.status_code == expected_value
-

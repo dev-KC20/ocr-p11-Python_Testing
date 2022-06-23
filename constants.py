@@ -1,4 +1,3 @@
-
 PLACE_PRICE = 3
 SECRET_KEYS = "something_special"
 MAIL_UNKNOWN = "Your email is not member of any of our clubs, pls check your affiliation."

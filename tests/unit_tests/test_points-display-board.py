@@ -1,7 +1,3 @@
-from flask import current_app, Flask, session
-
-import constants
-
 def test_url_display_board_is_available(client):
     """
     GIVEN  a secretary logs into the app
@@ -11,5 +7,3 @@ def test_url_display_board_is_available(client):
 
     response = client.get("/displayBoard")
     assert response.status_code == 200
-
-

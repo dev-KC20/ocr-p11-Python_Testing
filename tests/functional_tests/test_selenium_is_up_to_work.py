@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
+
 def test_selenium_is_up_to_work():
     driver = webdriver.Firefox()
     driver.get("http://www.python.org")

@@ -51,8 +51,17 @@ def show_summary():
     try:
         club = [club for club in clubs if club["email"] == request.form["email"]][0]
         return render_template("welcome.html", club=club, competitions=competitions)
-    except:
+    except TypeError as error:
+        flash(constants.TYPE_ERROR)
+        flash(error)
+        return render_template("401.html"), 401
+    except IndexError as error:
         flash(constants.MAIL_UNKNOWN)
+        flash(error)
+        return render_template("401.html"), 401
+    except KeyError as error:
+        flash(constants.KEY_ERROR)
+        flash(error)
         return render_template("401.html"), 401
 
 
@@ -94,7 +103,7 @@ def purchase_places():
         places_already_booked = booking[club_selected][competition_selected]
 
         date_competition = datetime.strptime(competition_data["date"], "%Y-%m-%d %H:%M:%S")
-        if (places_required  + places_already_booked) > (int(club_data["points"])/constants.PLACE_PRICE):
+        if (places_required + places_already_booked) > (int(club_data["points"]) / constants.PLACE_PRICE):
             flash(constants.NOT_ENOUGH_POINTS, "error")
         elif places_required <= 0:
             flash(constants.MORE_THAN_ZERO, "error")

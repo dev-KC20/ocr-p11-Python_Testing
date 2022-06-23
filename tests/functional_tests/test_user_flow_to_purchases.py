@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 import constants
 
@@ -42,7 +42,7 @@ def test_user_makes_happily_flow_from_loggin_to_purchase():
     element.send_keys(user_email)
     element.send_keys(Keys.RETURN)
     element.submit()
-    WebDriverWait(driver, 10).until(EC.title_contains(constants.SELENIUM_WELCOME_TITLE))
+    WebDriverWait(driver, 10).until(ec.title_contains(constants.SELENIUM_WELCOME_TITLE))
     expected = constants.SELENIUM_SITE_LOGGED_IN + user_email
     assert expected in driver.page_source
     club_account = get_by_id_and_return(driver, "account").text
@@ -51,15 +51,14 @@ def test_user_makes_happily_flow_from_loggin_to_purchase():
     places_to_book = 1
     element = get_by_id_and_return(driver, "competition")
     element.click()
-    WebDriverWait(driver, 10).until(EC.title_contains(constants.SELENIUM_BOOKING_TITLE_LEFT))
-    expected_summary = "Competitions:"
+    WebDriverWait(driver, 10).until(ec.title_contains(constants.SELENIUM_BOOKING_TITLE_LEFT))
 
     element = get_by_id_and_return(driver, "Spring Festival")
     element.clear()
     element.send_keys(places_to_book)
     element.send_keys(Keys.RETURN)
     element.submit()
-    WebDriverWait(driver, 10).until(EC.title_contains(constants.SELENIUM_WELCOME_TITLE))
+    WebDriverWait(driver, 10).until(ec.title_contains(constants.SELENIUM_WELCOME_TITLE))
 
     club_account = get_by_id_and_return(driver, "account").text
     # Points available: 1?

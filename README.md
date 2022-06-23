@@ -123,6 +123,13 @@ tests\unit_tests\test_update_points_of_club.py .                                
 
     ![](img/locust_test_report.png)  
 
+  
+    
+      
+By the way about styling the code: ;) :
+
+![](img/flake-pep-8-all-good.png)  
+
 ## Credits and good reads.
 
 

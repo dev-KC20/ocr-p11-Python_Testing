@@ -1,6 +1,5 @@
 # future fixtures
 import pytest
-import constants
 
 import server  # to have its Club object mocked
 from server import app
@@ -41,12 +40,12 @@ def competitions():
 @pytest.fixture(scope="function")
 def booking():
     booking = {
-    "Test Secretary 1": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
-    "Test Secretary 2": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
-    "Test Secretary 3": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
-    "Test Secretary 4": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
-    "Test Secretary 5": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
-}
+        "Test Secretary 1": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
+        "Test Secretary 2": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
+        "Test Secretary 3": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
+        "Test Secretary 4": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
+        "Test Secretary 5": {"Festival 1": 0, "Festival 2": 0, "Festival 3": 0, "Festival 4": 0},
+    }
     return booking
 
 

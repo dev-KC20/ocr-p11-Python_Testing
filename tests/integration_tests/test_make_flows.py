@@ -1,5 +1,3 @@
-from flask import current_app, Flask, session
-
 import constants
 
 
@@ -7,10 +5,9 @@ def test_make_happily_flow_from_loggin_to_purchase(client):
 
     """
     GIVEN a Flask application configured for testing and a club's secretary
-    requested to book 3 places at Festival 4 
+    requested to book 3 places at Festival 4
     THEN the hereunder flow will be achieved
     """
-
 
     """ A
     WHEN the '/' page is requested (GET)
@@ -43,7 +40,7 @@ def test_make_happily_flow_from_loggin_to_purchase(client):
     url = "/book/" + competition_name + "/" + club_name
     response = client.get(url, data={"competition": competition_name, "club": club_name}, follow_redirects=False)
     assert response.status_code == expected_status
-    
+
     assert expected_booking in response.data
 
     """ D
@@ -75,6 +72,7 @@ def test_make_happily_flow_from_loggin_to_purchase(client):
     account_balance = response_text[account_start:account_end]
     assert expected_account in account_balance
     # print("D response: ", response_data, account_balance)  # tracking the error
+
 
 def test_make_sadly_flow_from_loggin_to_more_than_earned(client):
 
@@ -118,7 +116,7 @@ def test_make_sadly_flow_from_loggin_to_more_than_earned(client):
     response_data = response.data.decode()
     assert response.status_code == expected_status
     assert expected_uncompleted in response_data
-   
+
 
 def test_make_sadly_flow_from_loggin_to_more_than_max(client):
 
@@ -127,8 +125,8 @@ def test_make_sadly_flow_from_loggin_to_more_than_max(client):
     requested to book more than 12 places at Festival 3
     THEN the hereunder flow will be achieved
     """
-    mail = "ts5@club5.asso" 
-    club_name = "Test Secretary 5" # 50 pts
+    mail = "ts5@club5.asso"
+    club_name = "Test Secretary 5"  # 50 pts
     competition_name = "Festival 3"
 
     expected_status = 200
@@ -161,7 +159,7 @@ def test_make_sadly_flow_from_loggin_to_more_than_max(client):
     response_data = response.data.decode()
     assert response.status_code == expected_status
     assert expected_uncompleted in response_data
-   
+
 
 def test_make_sadly_flow_from_loggin_not_in_past(client):
 
@@ -193,5 +191,3 @@ def test_make_sadly_flow_from_loggin_not_in_past(client):
     assert expected_booking in response.data.decode()
 
     print("D response: ", response.data.decode())  # tracking the error
-
-   

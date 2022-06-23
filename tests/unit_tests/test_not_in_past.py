@@ -1,7 +1,4 @@
-from flask import current_app, Flask, session
-
 import constants
-
 
 
 def test_book_not_in_past(client):
@@ -12,10 +9,15 @@ def test_book_not_in_past(client):
     """
     expected = constants.DATE_LATE
     club_name = "Test Secretary 1"
-    competition_name = "Festival 2" # past event
+    competition_name = "Festival 2"  # past event
     url = "/book/" + competition_name + "/" + club_name
     response = client.get(
-        url, data={"competition": competition_name, "club": club_name,}, follow_redirects=True
+        url,
+        data={
+            "competition": competition_name,
+            "club": club_name,
+        },
+        follow_redirects=True,
     )
     response_data = response.get_data(as_text=True)
     # print("booking data: ", response_data)  # tracking the error
@@ -30,7 +32,7 @@ def test_purchase_not_in_past(client):
     """
     expected = constants.BOOKING_COMPLETED
     club_name = "Test Secretary 1"
-    competition_name = "Festival 2" # past event
+    competition_name = "Festival 2"  # past event
     places_to_book = 1
     url = "/purchasePlaces"
     response = client.post(
@@ -49,7 +51,7 @@ def test_purchase_in_future(client):
     """
     expected = constants.BOOKING_COMPLETED
     club_name = "Test Secretary 1"
-    competition_name = "Festival 4" # future  event
+    competition_name = "Festival 4"  # future  event
     places_to_book = 1
     url = "/purchasePlaces"
     response = client.post(
@@ -58,5 +60,3 @@ def test_purchase_in_future(client):
     response_data = response.get_data(as_text=True)
     # print("purchase data: ", response_data)  # tracking the error
     assert expected in response_data
-
-
